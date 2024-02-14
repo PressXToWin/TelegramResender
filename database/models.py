@@ -15,11 +15,10 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     tg_id = Column(BigInteger, nullable=False)
     connection_date = Column(DateTime, nullable=False, default=datetime.now())
-    bot_token = Column(String)
-    channel_to_send = Column(BigInteger, nullable=False)
+    channel_to_send = Column(BigInteger)
     keywords = relationship(
         'Keyword',
-        backref='keyword',
+        backref='keywords',
         lazy=True,
         cascade='all, delete-orphan'
     )
