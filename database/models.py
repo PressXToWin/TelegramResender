@@ -16,7 +16,7 @@ class User(Base):
     tg_id = Column(BigInteger, nullable=False)
     connection_date = Column(DateTime, nullable=False, default=datetime.now())
     bot_token = Column(String)
-    channel = Column(BigInteger, nullable=False)
+    channel_to_send = Column(BigInteger, nullable=False)
     keywords = relationship(
         'Keyword',
         backref='keyword',
@@ -37,6 +37,17 @@ class Keyword(Base):
 
     def __repr__(self):
         return f'{self.user} - {self.keyword}'
+
+
+class Channel(Base):
+    __tablename__ = 'Channels'
+    id = Column(Integer, primary_key=True)
+    owner = Column(Integer, ForeignKey('Users.id'), nullable=False)
+    channel = Column(String)
+    date = Column(DateTime, nullable=False, default=datetime.now())
+
+    def __repr__(self):
+        return f'{self.user} - {self.channel}'
 
 
 Base.metadata.create_all(engine)
