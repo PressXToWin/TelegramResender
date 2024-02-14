@@ -160,3 +160,5 @@ cython_debug/
 .idea/
 /.idea/
 /session.session
+/session.session-journal
+*.db

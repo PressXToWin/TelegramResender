@@ -1,21 +1,8 @@
-from telethon import TelegramClient, events
-import os
+from telethon import events
 from dotenv import load_dotenv
+from settings import CHANNELS, KEYWORDS, MY_CHANNEL, client
 
 load_dotenv()
-
-API_ID = int(os.getenv("API_ID"))
-API_HASH = os.getenv("API_HASH")
-
-MY_CHANNEL = os.getenv("MY_CHANNEL")
-KEYWORDS = os.getenv('KEYWORDS', '').split()
-CHANNELS = os.getenv("CHANNELS").split()
-
-if os.getenv('PROXY_IP', None):
-    proxy = (os.getenv("PROXY_PROTO"), os.getenv("PROXY_IP"), os.getenv("PROXY_PORT"))
-    client = TelegramClient('session', API_ID, API_HASH, proxy=proxy)
-else:
-    client = TelegramClient('session', API_ID, API_HASH)
 
 client.start()
 
