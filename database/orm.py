@@ -41,8 +41,8 @@ def set_user_channel_to_send(tg_id, channel):
 
 def get_user_channel_to_send(tg_id):
     session = Session()
-    user = session.query(User).filter(User.tg_id == tg_id).first()
-    return user.channel_to_send
+    return session.query(User).filter(User.id == 1).first().channel_to_send
+#    return session.query(User).filter(User.tg_id == tg_id).first().channel_to_send
 
 
 def add_channel(tg_id, channel):
@@ -106,10 +106,12 @@ def add_message(channel_id, message_id, message_date, text):
     session.add(new_message)
     session.commit()
 
+
 def get_messages():
     session = Session()
     rows = session.query(Message).count()
     return rows
+
 
 def get_last_message():
     session = Session()

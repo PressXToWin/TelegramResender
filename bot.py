@@ -41,7 +41,7 @@ async def channel_start(message: types.Message):
     markup = types.reply_keyboard.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
     btn1 = types.KeyboardButton('Меню')
     markup.add(btn1)
-    text = 'Укажите канал, куда нужно пересылать сообщения'
+    text = 'Укажите id канала, куда нужно пересылать сообщения'
     await message.answer(text, reply_markup=markup)
     await SetUserChannel.waiting_channel.set()
 
@@ -69,7 +69,8 @@ async def send_message():
         new_rows = orm.get_messages()
         if rows != new_rows:
             message = orm.get_last_message()
-            await bot.send_message(settings.MY_CHANNEL, f'{message.message_text} \n {message.channel_id}')
+            id_to_send = orm.get_user_channel_to_send(None)
+            await bot.send_message(id_to_send, f'{message.message_text} \n {message.channel_id}')
             rows = new_rows
 
 if __name__ == '__main__':
