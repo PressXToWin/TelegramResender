@@ -58,8 +58,9 @@ def add_channel(tg_id, channel):
 
 def get_channels(tg_id):
     session = Session()
-    user = session.query(User).filter(User.tg_id == tg_id).first()
-    channels = user.channels
+    # user = session.query(User).filter(User.tg_id == tg_id).first()
+    channels = session.query(Channel.channel).filter(Channel.owner == 1).all()
+    channels = [chan[0] for chan in channels]
     return channels
 
 

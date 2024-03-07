@@ -9,7 +9,6 @@ API_ID = int(os.getenv("API_ID"))
 API_HASH = os.getenv("API_HASH")
 
 KEYWORDS = os.getenv('KEYWORDS', '').split()
-CHANNELS = os.getenv("CHANNELS").split()
 
 if os.getenv('PROXY_IP', None):
     proxy = (os.getenv("PROXY_PROTO"), os.getenv("PROXY_IP"), os.getenv("PROXY_PORT"))

@@ -17,6 +17,10 @@ class SetUserChannel(StatesGroup):
     waiting_channel = State()
 
 
+class SetFromChannel(StatesGroup):
+    waiting_channel = State()
+
+
 @dp.message_handler(commands=['start'])
 async def start_message(message: types.Message):
     orm.add_user(message.from_user.id)
@@ -34,6 +38,31 @@ async def main_menu():
     btn3 = types.KeyboardButton('Установить канал для получения')
     markup.add(btn1, btn2, btn3)
     return markup
+
+
+@dp.message_handler(regexp='Добавить канал')
+async def channel_from_start(message: types.Message):
+    markup = types.reply_keyboard.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+    btn1 = types.KeyboardButton('Меню')
+    markup.add(btn1)
+    text = 'Укажите username канала, откуда нужно брать сообщения'
+    await message.answer(text, reply_markup=markup)
+    await SetFromChannel.waiting_channel.set()
+
+
+@dp.message_handler(state=SetFromChannel.waiting_channel)
+async def channel_chosen(message: types.Message, state: FSMContext):
+    if message.text == 'Меню':
+        await start_message(message)
+        await state.finish()
+        return
+    await state.update_data(waiting_channel=message.text)
+    user_data = await state.get_data()
+    orm.add_channel(message.from_user.id, user_data.get('waiting_channel'))
+    markup = await main_menu()
+    text = f'Добавлен канал {user_data.get("waiting_channel")}.'
+    await message.answer(text, reply_markup=markup)
+    await state.finish()
 
 
 @dp.message_handler(regexp='Установить канал для получения')
