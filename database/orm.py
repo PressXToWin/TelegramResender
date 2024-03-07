@@ -1,11 +1,11 @@
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine, select, desc
 from sqlalchemy.orm import sessionmaker
 
 import settings
 
-from .models import Base, User, Channel, Keyword
+from .models import Base, User, Channel, Keyword, Message
 
-engine = create_engine(settings.DATABASE_URL, echo=True)
+engine = create_engine(settings.DATABASE_URL, echo=True, pool_size=0, max_overflow=0)
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 
@@ -93,3 +93,24 @@ def delete_user_keywords(keyword_id):
     keyword = session.get(Keyword, keyword_id)
     session.delete(keyword)
     session.commit()
+
+
+def add_message(channel_id, message_id, message_date, text):
+    session = Session()
+    new_message = Message(
+        message_date=message_date,
+        message_id=message_id,
+        channel_id=channel_id,
+        message_text=text
+    )
+    session.add(new_message)
+    session.commit()
+
+def get_messages():
+    session = Session()
+    rows = session.query(Message).count()
+    return rows
+
+def get_last_message():
+    session = Session()
+    return session.query(Message).order_by(Message.id.desc()).first()

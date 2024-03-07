@@ -1,13 +1,13 @@
 from datetime import datetime
 
 from sqlalchemy import (BigInteger, Column, DateTime, ForeignKey, Integer,
-                        String, create_engine)
+                        String, Text, create_engine)
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 
 import settings
 
 Base = declarative_base()
-engine = create_engine(settings.DATABASE_URL, echo=True)
+engine = create_engine(settings.DATABASE_URL, echo=True, pool_size=0, max_overflow=0)
 
 
 class User(Base):
@@ -47,6 +47,15 @@ class Channel(Base):
 
     def __repr__(self):
         return f'{self.user} - {self.channel}'
+
+
+class Message(Base):
+    __tablename__ = 'Messages'
+    id = Column(Integer, primary_key=True)
+    channel_id = Column(BigInteger, nullable=False)
+    message_date = Column(DateTime, nullable=False, default=datetime.now())
+    message_id = Column(BigInteger, nullable=False)
+    message_text = Column(Text)
 
 
 Base.metadata.create_all(engine)

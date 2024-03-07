@@ -1,3 +1,5 @@
+import asyncio
+
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
@@ -58,5 +60,20 @@ async def channel_chosen(message: types.Message, state: FSMContext):
     await message.answer(text, reply_markup=markup)
     await state.finish()
 
+
+async def send_message():
+    rows = orm.get_messages()
+
+    while True:
+        await asyncio.sleep(1)
+        new_rows = orm.get_messages()
+        if rows != new_rows:
+            message = orm.get_last_message()
+            await bot.send_message(settings.MY_CHANNEL, f'{message.message_text} \n {message.channel_id}')
+            rows = new_rows
+
 if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.create_task(send_message())
+
     executor.start_polling(dp, skip_updates=True)
