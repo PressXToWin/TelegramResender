@@ -1,10 +1,10 @@
-# TelegramResender
+# TelegramResender [Archived]
 
 **EN**: Free and Open-source version of https://t.me/junction_bot, allows to read several Telegram-channels in the same feed.
 
 **RU**: Свободный, бесплатный и открытый аналог бота https://t.me/junction_bot, позволяет читать несколько Telegram-каналов в единой ленте.
 
-**Проект в стадии MVP, ведётся активная разработка.**
+**Проект в стадии MVP, ~~ведётся активная разработка~~ находится в архиве. Возможно, работа когда-нибудь будет возобновлена.**
 
 ## Как это работает:
 
